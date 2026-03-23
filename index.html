@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Zyrex Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --core-purple:#8A2BE2;--plasma-pink:#FF00FF;--cyber-teal:#00FFF0;
+  --matrix-green:#00FF9D;--warning-orange:#FF6B00;
+  --void-black:#0A001A;--font-primary:'Orbitron', monospace;
+  --font-secondary:'Exo 2', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:var(--font-secondary);background:var(--void-black);
+  color:#E6E6FA;min-height:100vh;overflow:hidden;
+  display:flex;justify-content:center;align-items:center;
+}
+
+/* ===== BACKGROUND ===== */
+#quantum-field{
+  position:fixed;inset:0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(138,43,226,.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255,0,255,.1), transparent 40%),
+    linear-gradient(135deg,#0A001A,#1A0B2E,#0A001A);
+  z-index:-3;
+}
+#nexus-grid{
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(157,0,255,.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(157,0,255,.3) 1px, transparent 1px);
+  background-size:50px 50px;opacity:.3;z-index:-2;
+}
+canvas{position:fixed;inset:0;z-index:-1}
+
+/* ===== CORE UI ===== */
+.nexus-container{display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;width:100%}
+.quantum-card{
+  width:100%;max-width:320px;background:rgba(26,11,46,.85);
+  backdrop-filter:blur(15px);border-radius:18px;padding:25px;
+  border:1px solid rgba(138,43,226,.5);
+  box-shadow:0 4px 25px rgba(138,43,226,.25);
+  animation:fadeIn 1s ease;
+}
+.profile-nexus{text-align:center;margin-bottom:15px}
+.nexus-avatar{
+  width:100px;height:100px;border-radius:50%;margin:auto;padding:2px;
+  background:linear-gradient(45deg,var(--core-purple),var(--plasma-pink));
+}
+.nexus-avatar img{
+  width:100%;height:100%;border-radius:50%;
+  border:2px solid rgba(0,255,200,.5);
+  object-fit: cover;
+}
+.nexus-title{
+  font-family:var(--font-primary);font-size:1.4rem;
+  background:linear-gradient(90deg,var(--core-purple),var(--plasma-pink),var(--cyber-teal));
+  -webkit-background-clip:text;color:transparent;
+  text-align:center;margin-bottom:5px;
+}
+.nexus-subtitle{text-align:center;font-size:12px;opacity:.75;margin-bottom:15px}
+.quantum-btn{
+  width:100%;padding:10px;border:none;border-radius:10px;
+  background:linear-gradient(45deg,var(--core-purple),var(--plasma-pink));
+  color:#fff;font-family:var(--font-primary);
+  cursor:pointer;margin-top:10px;font-size:14px;transition:.3s;
+}
+.quantum-btn:hover{background:linear-gradient(45deg,#9d4eff,#ff33ff)}
+  
+@keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div id="quantum-field"></div>
+<div id="nexus-grid"></div>
+<canvas id="particles"></canvas>
+
+<div class="nexus-container">
+  <div class="quantum-card" id="loginCard">
+    <div class="profile-nexus">
+      <div class="nexus-avatar">
+        <img src="https://files.catbox.moe/k5782c.jpg" alt="Profile">
+      </div>
+    </div>
+    <h2 class="nexus-title">Zyrex Panel</h2>
+    <div class="nexus-subtitle">Ikuti Saluran Sebelum Menggunakan Panel</div>
+    
+    <button class="quantum-btn" id="waBtn">
+      <i class="fab fa-whatsapp"></i> Join Saluran WhatsApp
+    </button>
+  </div>
+</div>
+
+<script>
+// ===== PARTICLES =====
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initParticles() {
+  particles = [];
+  for(let i = 0; i < 80; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.6,
+      vy: (Math.random() - 0.5) * 0.6,
+      r: Math.random() * 2 + 1
+    });
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    
+    if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+    
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(138,43,226,.8)";
+    ctx.fill();
+  });
+  requestAnimationFrame(animate);
+}
+
+resize();
+initParticles();
+animate();
+window.addEventListener('resize', resize);
+
+// ===== LINK WHATSAPP =====
+const whatsappLink = "https://whatsapp.com/channel/0029VaPhjdlAjPXT6MFkR60s";
+
+// ===== FIX APK BLANK (SMART OPEN) =====
+function smartOpen(url) {
+  const intentURL = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+  const a = document.createElement('a');
+  a.href = intentURL;
+  a.target = "_blank";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  
+  setTimeout(() => {
+    window.open(url, '_system');
+  }, 500);
+}
+
+// ===== TOMBOL WHATSAPP =====
+const waBtn = document.getElementById("waBtn");
+
+waBtn.onclick = () => {
+  smartOpen(whatsappLink);
+};
+</script>
+</body>
+</html>
